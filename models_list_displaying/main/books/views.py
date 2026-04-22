@@ -30,7 +30,7 @@ def book_view(request, date):
     books = books_pagi_sort[page]
 
     try:
-        ind_b = list(dict_books_revers.keys())[page - 1 if page - 1 > -1 else "m"]
+        ind_b = list(dict_books_revers.keys())[page - 1 if page - 1 > -1 else "spec error"]
         behind = books_pagi_sort[ind_b].pub_date
     except TypeError:
         behind = 0
