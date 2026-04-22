@@ -8,4 +8,4 @@ class Phone(models.Model):
     image = models.CharField(max_length=500)
     release_date = models.DateField()
     lte_exists = models.BooleanField()
-    slug = models.CharField(max_length=150)
+    slug = models.CharField(max_length=150, unique=True)
