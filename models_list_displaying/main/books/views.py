@@ -33,13 +33,13 @@ def book_view(request, date):
         ind_b = list(dict_books_revers.keys())[page - 1 if page - 1 > -1 else "spec error"]
         behind = books_pagi_sort[ind_b].pub_date
     except TypeError:
-        behind = 0
+        behind = None
 
     try:
         ind_n = list(dict_books_revers.keys())[page + 1]
         after = books_pagi_sort[ind_n].pub_date
     except IndexError:
-        after = 0
+        after = None
 
     context = {
         'books': [books],
