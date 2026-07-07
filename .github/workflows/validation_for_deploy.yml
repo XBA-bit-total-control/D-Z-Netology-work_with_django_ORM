@@ -1,0 +1,45 @@
+name: Validating changes and deploy
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  testings:
+    runs-on: ubuntu-latest
+    env:
+      DB_LOGIN: ${{ secrets.DB_LOGIN }}
+      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+      DB_HOST: ${{ secrets.DB_HOST }}
+      DB_PORT: ${{ secrets.DB_PORT }}
+      DB_NAME: ${{ secrets.DB_NAME }}
+      DB_USER: ${{ secrets.DB_USER }}
+      DB_ENGINE: ${{ secrets.DB_ENGINE }}
+      ALLOWED_HOSTS: ${{ secrets.ALLOWED_HOSTS }}
+
+    services:
+      postgresql_main:
+        image: postgres:12
+        env:
+          POSTGRES_DB: ${{ env.DB_NAME }}
+          POSTGRES_USER: ${{ env.DB_USER }}
+          POSTGRES_PASSWORD: ${{ env.DB_PASSWORD }}
+        ports:
+          - 5432:5432
+        options:
+          --health-cmd pg_isready
+          --health-internal 5s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Обновление проекта
+        uses: actions/checkout@v4
+
+      - name: Установка python
+        uses: actions/setp-python@v4
+        with:
+          python-version: 3.13
+
+      - name: Установка библиотек
+        run: pip install -r requirements.txt
